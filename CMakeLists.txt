@@ -5,7 +5,8 @@ set(CMAKE_CXX_STANDARD 20)
 
 include_directories(
         "C:/Mine/work/gamedev/cpp/libs/glfw-3.4.bin.WIN64/include"
-        "C:/Mine/work/gamedev/cpp/libs/glew-2.1.0/include"
+        external/glad/include
+#        "C:/Mine/work/gamedev/cpp/libs/glew-2.1.0/include"
 )
 
 link_directories(
@@ -13,15 +14,22 @@ link_directories(
         "C:/Mine/work/gamedev/cpp/libs/glew-2.1.0/lib/Release/x64"
 )
 
-add_executable(opengl_learn main.cpp)
+add_executable(
+        opengl_learn main.cpp
+        getting_started/creating_a_window/window.cpp
+        getting_started/creating_a_window/window.h
+)
+add_library(
+        glad external/glad/src/glad.c
+)
 
 find_package(OpenGL REQUIRED)
 
-target_link_libraries(
-    opengl_learn
-    glfw3
-    glew32
-    ${OPENGL_LIBRARIES}
+target_link_libraries(opengl_learn
+        glad
+        glfw3
+        glew32
+        ${OPENGL_LIBRARIES}
 )
 
 # Copy GLEW DLL to output directory

@@ -1,6 +1,8 @@
 #include <iostream>
+#include "getting_started/creating_a_window/window.h"
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    if ( run() < 0 ) return -1;
+
     return 0;
 }

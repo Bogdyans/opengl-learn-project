@@ -1,0 +1,6 @@
+#ifndef OPENGL_LEARN_WINDOW_H
+#define OPENGL_LEARN_WINDOW_H
+
+int run();
+
+#endif //OPENGL_LEARN_WINDOW_H
