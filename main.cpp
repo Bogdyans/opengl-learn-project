@@ -1,8 +1,15 @@
 #include <iostream>
-#include "getting_started/creating_a_window/window.h"
+#include <GLFW/glfw3.h>
+#include "getting_started/triangle.h"
 
 int main() {
-    if ( run() < 0 ) return -1;
+    if ( runT() < 0 )
+    {
+        glfwTerminate();
+        return -1;
+    }
 
+
+    glfwTerminate();
     return 0;
 }

@@ -16,8 +16,10 @@ link_directories(
 
 add_executable(
         opengl_learn main.cpp
-        getting_started/creating_a_window/window.cpp
-        getting_started/creating_a_window/window.h
+        getting_started/window.cpp
+        getting_started/window.h
+        getting_started/triangle.h
+        getting_started/triangle.cpp
 )
 add_library(
         glad external/glad/src/glad.c

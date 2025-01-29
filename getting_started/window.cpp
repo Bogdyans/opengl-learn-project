@@ -1,4 +1,4 @@
-#include <glad/glad.h>
+#include "glad/glad.h"
 #include <GLFW/glfw3.h>
 #include <cstdio>
 
@@ -58,7 +58,6 @@ int run()
         glfwPollEvents();
     }
 
-    glfwTerminate();
     return 0;
 }
 
