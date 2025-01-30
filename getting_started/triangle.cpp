@@ -2,11 +2,11 @@
 #include <GLFW/glfw3.h>
 #include <fstream>
 #include <iostream>
-#include <sstream>
 
 #include "triangle.h"
 
-
+const int SCR_WIDTH = 800;
+const int SCR_HEIGHT = 600;
 float vertices[] ={
         -0.5f, -0.5f, 0.0f,
          0.2f, 0.5f, 0.0f,
@@ -15,19 +15,39 @@ float vertices[] ={
 const char* vertex_shader_path = "../shaders/vertex.vert";
 const char* fragment_shader_path = "../shaders/fragment.frag";
 
-const char* readFile( const char* filePath )
+GLFWwindow* initWindow()
 {
-    std::ifstream file( filePath );
-    if ( !file.is_open() ) {
-        std::cout << "Failed to open file: " << filePath << std::endl;
+    glfwWindowHint( GLFW_CONTEXT_VERSION_MAJOR, 4 );
+    glfwWindowHint( GLFW_CONTEXT_VERSION_MINOR, 4 );
+    glfwWindowHint( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
+
+#ifdef __APPLE__
+    glfwWindowHint( GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE );
+#endif
+
+    GLFWwindow* window = glfwCreateWindow( SCR_WIDTH, SCR_HEIGHT, "First Window", nullptr, nullptr );
+    if ( window == nullptr )
         return nullptr;
+
+    glfwMakeContextCurrent( window );
+    glfwSetFramebufferSizeCallback(window, [](auto window, auto width, auto height) {
+        glViewport( 0, 0, width, height );
+    });
+
+    return window;
+}
+
+const std::string* readFile( const char* filePath )
+{
+    std::string line;
+    auto text = new std::string();
+    std::ifstream in( filePath );
+    while( std::getline( in, line ) )
+    {
+        *text += line + "\n";
     }
 
-    std::stringstream buffer;
-    buffer << file.rdbuf();
-    file.close();
-
-    return buffer.str().c_str();
+    return text;
 }
 
 bool checkSuccess( unsigned int shader )
@@ -47,30 +67,52 @@ bool checkSuccess( unsigned int shader )
 
 int runT()
 {
+    if ( glfwInit() == GLFW_FALSE )
+    {
+        const char* errorMsg[1];
+        glfwGetError( errorMsg );
+        printf( "Error initializing glfw, %s", errorMsg[0] );
+
+        return -1;
+    }
+    GLFWwindow* window = initWindow();
+
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        std::cout << "Failed to initialize GLAD" << std::endl;
+        return -1;
+    }
+
     unsigned int VBO;
     glGenBuffers( 1, &VBO );
     glBindBuffer( GL_ARRAY_BUFFER, VBO );
     glBufferData( GL_ARRAY_BUFFER, sizeof( vertices ), vertices, GL_STATIC_DRAW );
 
-    const char* vertexShaderSource = readFile( vertex_shader_path );
+    // This part fucking sucks, IDK what to do, will think about it later
+
+    const std::string* vertexShaderSource = readFile( vertex_shader_path );
+    const char* vsrc = vertexShaderSource->c_str();
     unsigned int vertexShader;
 
+    printf("%s", vsrc);
+
     vertexShader = glCreateShader( GL_VERTEX_SHADER );
-    glShaderSource( vertexShader, 1, &vertexShaderSource, nullptr );
+    glShaderSource( vertexShader, 1, &vsrc, nullptr );
     glCompileShader( vertexShader );
+    delete vertexShaderSource;
 
     if ( !checkSuccess( vertexShader ) )
         return -1;
 
 
-
-
-    const char* fragmentShaderSource = readFile( fragment_shader_path );
+    const std::string* fragmentShaderSource = readFile( fragment_shader_path );
+    const char* fsrc = fragmentShaderSource->c_str();
     unsigned int fragmentShader;
 
     fragmentShader = glCreateShader( GL_FRAGMENT_SHADER );
-    glShaderSource( fragmentShader, 1, &fragmentShaderSource, nullptr );
+    glShaderSource( fragmentShader, 1, &fsrc, nullptr );
     glCompileShader( fragmentShader );
+    delete fragmentShaderSource;
 
     if ( !checkSuccess( fragmentShader ) )
         return -1;
