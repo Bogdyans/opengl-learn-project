@@ -1,0 +1,6 @@
+#ifndef OPENGL_LEARN_TRIANGLES_H
+#define OPENGL_LEARN_TRIANGLES_H
+
+int runExercise();
+
+#endif //OPENGL_LEARN_TRIANGLES_H

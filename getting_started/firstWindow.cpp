@@ -1,8 +1,8 @@
 #include "glad/glad.h"
-#include <GLFW/glfw3.h>
 #include <cstdio>
 
-#include "window.h"
+#include "firstWindow.h"
+#include "../shared/window.h"
 
 void framebuffer_size_callback( GLFWwindow* window, int width, int height )
 {
@@ -26,11 +26,7 @@ int run()
         return -1;
     }
 
-    glfwWindowHint( GLFW_CONTEXT_VERSION_MAJOR, 4 );
-    glfwWindowHint( GLFW_CONTEXT_VERSION_MINOR, 0 );
-    glfwWindowHint( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
-
-    GLFWwindow* window = glfwCreateWindow( 800, 600, "First Window", nullptr, nullptr );
+    GLFWwindow* window = initWindow();
     if ( window == nullptr )
     {
         printf( "Error creating window" );

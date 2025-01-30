@@ -1,12 +1,10 @@
 #include <glad/glad.h>
-#include <GLFW/glfw3.h>
 #include <fstream>
 #include <iostream>
 
 #include "triangle.h"
+#include "../shared/window.h"
 
-const int SCR_WIDTH = 800;
-const int SCR_HEIGHT = 600;
 float vertices[] = {
         0.6f,  0.7f, 0.0f,  // top right
         0.5f, -0.5f, 0.0f,  // bottom right
@@ -19,28 +17,6 @@ unsigned int indices[] = {
 };
 const char* vertex_shader_path = "../shaders/vertex.vert";
 const char* fragment_shader_path = "../shaders/fragment.frag";
-
-GLFWwindow* initWindow()
-{
-    glfwWindowHint( GLFW_CONTEXT_VERSION_MAJOR, 4 );
-    glfwWindowHint( GLFW_CONTEXT_VERSION_MINOR, 4 );
-    glfwWindowHint( GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE );
-
-#ifdef __APPLE__
-    glfwWindowHint( GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE );
-#endif
-
-    GLFWwindow* window = glfwCreateWindow( SCR_WIDTH, SCR_HEIGHT, "First Window", nullptr, nullptr );
-    if ( window == nullptr )
-        return nullptr;
-
-    glfwMakeContextCurrent( window );
-    glfwSetFramebufferSizeCallback(window, [](auto window, auto width, auto height) {
-        glViewport( 0, 0, width, height );
-    });
-
-    return window;
-}
 
 const std::string* readFile( const char* filePath )
 {

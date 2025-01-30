@@ -6,7 +6,6 @@ set(CMAKE_CXX_STANDARD 20)
 include_directories(
         "C:/Mine/work/gamedev/cpp/libs/glfw-3.4.bin.WIN64/include"
         external/glad/include
-#        "C:/Mine/work/gamedev/cpp/libs/glew-2.1.0/include"
 )
 
 link_directories(
@@ -16,13 +15,17 @@ link_directories(
 
 add_executable(
         opengl_learn main.cpp
-        getting_started/window.cpp
-        getting_started/window.h
+        getting_started/firstWindow.cpp
+        getting_started/firstWindow.h
         getting_started/triangle.h
         getting_started/triangle.cpp
+        shared/window.h
+        shared/window.cpp
 )
 add_library(
         glad external/glad/src/glad.c
+        exercises/triangles.cpp
+        exercises/triangles.h
 )
 
 find_package(OpenGL REQUIRED)
