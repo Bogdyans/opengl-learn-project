@@ -1,9 +1,9 @@
 #include <glad/glad.h>
-#include <fstream>
 #include <iostream>
 
 #include "triangle.h"
 #include "../shared/window.h"
+#include "../shared/shader.h"
 
 float vertices[] = {
         0.6f,  0.7f, 0.0f,  // top right
@@ -15,65 +15,8 @@ unsigned int indices[] = {
         3, 0, 2,
         2, 0, 1
 };
-const char* vertex_shader_path = "../shaders/vertex.vert";
-const char* fragment_shader_path = "../shaders/fragment.frag";
-
-const std::string* readFile( const char* filePath )
-{
-    std::string line;
-    auto text = new std::string();
-    std::ifstream in( filePath );
-    while( std::getline( in, line ) )
-    {
-        *text += line + "\n";
-    }
-
-    return text;
-}
-
-bool checkShaderCompilationSuccess( unsigned int shader )
-{
-    int success;
-    char infoLog[512];
-    glGetShaderiv( shader, GL_COMPILE_STATUS, &success );
-
-    if ( !success )
-    {
-        glGetShaderInfoLog( shader, 512, nullptr, infoLog );
-        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-    }
-
-    return success;
-}
-
-bool checkProgramLinkingSuccess( unsigned int program )
-{
-    int success;
-    char infoLog[512];
-    glGetProgramiv(program, GL_LINK_STATUS, &success);
-    if(!success) {
-        glGetProgramInfoLog(program, 512, nullptr, infoLog);
-    }
-
-    return success;
-}
-
-unsigned int createShader( const char* shaderSource, int shaderType )
-{
-    const std::string* shaderSrcStr = readFile( shaderSource );
-    const char* src = shaderSrcStr->c_str();
-    unsigned int shader;
-
-    shader = glCreateShader( shaderType );
-    glShaderSource( shader, 1, &src, nullptr );
-    glCompileShader( shader );
-    delete shaderSrcStr;
-
-    if ( !checkShaderCompilationSuccess( shader ) )
-        return 0;
-
-    return shader;
-}
+const char* vertexShaderPath = "../shaders/vertex.vert";
+const char* fragmentShaderPath = "../shaders/fragment.frag";
 
 int runT()
 {
@@ -94,10 +37,10 @@ int runT()
     }
     // This part fucking sucks, but not so much now
 
-    unsigned int vertexShader = createShader( vertex_shader_path, GL_VERTEX_SHADER );
+    unsigned int vertexShader = createShader( vertexShaderPath, GL_VERTEX_SHADER );
     if ( vertexShader == 0 ) return -1;
 
-    unsigned int fragmentShader = createShader( fragment_shader_path, GL_FRAGMENT_SHADER );
+    unsigned int fragmentShader = createShader( fragmentShaderPath, GL_FRAGMENT_SHADER );
     if ( fragmentShader == 0 ) return -1;
 
     unsigned int shaderProgram;
@@ -112,16 +55,13 @@ int runT()
     glDeleteShader( vertexShader );
     glDeleteShader( fragmentShader );
 
-    unsigned int VBO;
-    glGenBuffers( 1, &VBO );
-
-    unsigned int VAO;
+    unsigned int VBO, VAO, EBO;
     glGenVertexArrays (1, &VAO );
-
-    unsigned int EBO;
+    glGenBuffers( 1, &VBO );
     glGenBuffers( 1, &EBO );
 
     glBindVertexArray(VAO);
+
     glBindBuffer( GL_ARRAY_BUFFER, VBO );
     glBufferData( GL_ARRAY_BUFFER, sizeof( vertices ), vertices, GL_STATIC_DRAW );
 
@@ -152,7 +92,6 @@ int runT()
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);
-
     glDeleteProgram(shaderProgram);
 
     return 0;

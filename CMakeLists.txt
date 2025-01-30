@@ -21,6 +21,8 @@ add_executable(
         getting_started/triangle.cpp
         shared/window.h
         shared/window.cpp
+        shared/shader.h
+        shared/shader.cpp
 )
 add_library(
         glad external/glad/src/glad.c

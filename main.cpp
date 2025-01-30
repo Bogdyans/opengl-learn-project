@@ -4,7 +4,7 @@
 #include "getting_started/firstWindow.h"
 
 int main() {
-    if ( run() < 0 )
+    if ( runExercise( 1 ) < 0 )
     {
         glfwTerminate();
         return -1;
