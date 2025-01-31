@@ -9,12 +9,21 @@
 
 int runET( TTasks task )
 {
-    if ( task == TRIANGLE_TASK_1 )
-    {
-        return taskT1();
+    int result;
+    switch (task){
+        case TRIANGLE_TASK_1 :
+            result = taskT1();
+            break;
+        case TRIANGLE_TASK_2:
+            result = taskT2();
+            break;
+        case TRIANGLE_TASK_3:
+            result = taskT3();
+            break;
     }
 
-    return 0;
+
+    return result;
 }
 
 int taskT1()
@@ -139,5 +148,61 @@ int taskT2()
     glDeleteShader( vertexShader );
     glDeleteShader( fragmentShader );
 
+    float vertices1[] = {
+            -0.6f, 0.5f, 0.0f,
+            -0.1f, -0.5f, 0.0f,
+            -0.6f, -0.5f, 0.0f,
+    };
+
+    float vertices2[] = {
+            0.1f, 0.5f, 0.0f,
+            0.6f, -0.5f, 0.0f,
+            0.1f, -0.5f, 0.0f
+    };
+
+    unsigned int VAO[2], VBO[2];
+    glGenVertexArrays( 2, VAO );
+    glGenBuffers( 2, VBO );
+
+    glBindVertexArray( VAO[0] );
+    glBindBuffer( GL_ARRAY_BUFFER, VBO[0] );
+    glBufferData( GL_ARRAY_BUFFER, sizeof( vertices1 ), vertices1, GL_STATIC_DRAW );
+    glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)nullptr );
+    glEnableVertexAttribArray( 0 );
+
+    glBindVertexArray( VAO[1] );
+    glBindBuffer( GL_ARRAY_BUFFER, VBO[1] );
+    glBufferData( GL_ARRAY_BUFFER, sizeof( vertices2 ), vertices2, GL_STATIC_DRAW );
+    glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)nullptr );
+    glEnableVertexAttribArray( 0 );
+
+    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+
+    while ( !glfwWindowShouldClose( window ) )
+    {
+        glClearColor( 0.5f, 0.5f, 0.5f, 1.0f );
+        glClear( GL_COLOR_BUFFER_BIT );
+
+        glUseProgram( shaderProgram );
+        glBindVertexArray( VAO[0] );
+        glDrawArrays( GL_TRIANGLES, 0, 3 );
+
+        glBindVertexArray( VAO[1] );
+        glDrawArrays( GL_TRIANGLES, 0, 3 );
+
+        glfwSwapBuffers( window );
+        glfwPollEvents();
+    }
+
+    glDeleteProgram( shaderProgram );
+    glDeleteBuffers( 2, VBO );
+    glDeleteVertexArrays( 2, VAO );
+
+    glfwTerminate();
+    return 0;
+}
+
+int taskT3()
+{
     return 0;
 }
