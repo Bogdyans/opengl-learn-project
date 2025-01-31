@@ -1,9 +1,10 @@
-#include <glad/glad.h>
+#include "triangle.h"
+
+#include "glad/glad.h"
 #include <iostream>
 
-#include "triangle.h"
-#include "../shared/window.h"
-#include "../shared/shader.h"
+#include "../../../shared/window.h"
+#include "../../../shared/shader.h"
 
 float vertices[] = {
         0.6f,  0.7f, 0.0f,  // top right
@@ -15,8 +16,6 @@ unsigned int indices[] = {
         3, 0, 2,
         2, 0, 1
 };
-const char* vertexShaderPath = "../shaders/vertex.vert";
-const char* fragmentShaderPath = "../shaders/fragment.frag";
 
 int runT()
 {
@@ -37,10 +36,10 @@ int runT()
     }
     // This part fucking sucks, but not so much now
 
-    unsigned int vertexShader = createShader( vertexShaderPath, GL_VERTEX_SHADER );
+    unsigned int vertexShader = createShader( TRIANGLE_VERTEX_SHADER, GL_VERTEX_SHADER );
     if ( vertexShader == 0 ) return -1;
 
-    unsigned int fragmentShader = createShader( fragmentShaderPath, GL_FRAGMENT_SHADER );
+    unsigned int fragmentShader = createShader( TRIANGLE_FRAGMENT_SHADER, GL_FRAGMENT_SHADER );
     if ( fragmentShader == 0 ) return -1;
 
     unsigned int shaderProgram;

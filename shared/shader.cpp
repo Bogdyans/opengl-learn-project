@@ -27,7 +27,7 @@ bool checkShaderCompilationSuccess( unsigned int shader )
     if ( !success )
     {
         glGetShaderInfoLog( shader, 512, nullptr, infoLog );
-        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+        std::cout << "ERROR::SHADER::COMPILATION_FAILED\n" << infoLog << std::endl;
     }
 
     return success;
@@ -38,7 +38,7 @@ unsigned int createShader(const char* shaderSource, int shaderType )
     const std::string* shaderSrcStr = readFile( shaderSource );
     const char* src = shaderSrcStr->c_str();
 
-    //printf("%s\n", src);
+    //printf("shader\n\n%s\n", src);
 
     unsigned int shader;
 
@@ -62,6 +62,7 @@ bool checkProgramLinkingSuccess( unsigned int program )
     glGetProgramiv(program, GL_LINK_STATUS, &success);
     if(!success) {
         glGetProgramInfoLog(program, 512, nullptr, infoLog);
+        std::cout << "ERROR::SHADER_PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
     }
 
     return success;

@@ -2,7 +2,7 @@
 #include <cstdio>
 
 #include "firstWindow.h"
-#include "../shared/window.h"
+#include "../../../shared/window.h"
 
 void framebuffer_size_callback( GLFWwindow* window, int width, int height )
 {

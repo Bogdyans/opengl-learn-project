@@ -15,19 +15,21 @@ link_directories(
 
 add_executable(
         opengl_learn main.cpp
-        getting_started/firstWindow.cpp
-        getting_started/firstWindow.h
-        getting_started/triangle.h
-        getting_started/triangle.cpp
+        lessons/getting_started/first_window/firstWindow.cpp
+        lessons/getting_started/first_window/firstWindow.h
+        lessons/getting_started/first_triangle/triangle.h
+        lessons/getting_started/first_triangle/triangle.cpp
+        lessons/getting_started/first_triangle/triangle_tasks.cpp
+        lessons/getting_started/first_triangle/triangle_tasks.h
+)
+add_library(
+        glad external/glad/src/glad.c
         shared/window.h
         shared/window.cpp
         shared/shader.h
         shared/shader.cpp
-)
-add_library(
-        glad external/glad/src/glad.c
-        exercises/triangles.cpp
-        exercises/triangles.h
+        shared/files.h
+        shared/files.cpp
 )
 
 find_package(OpenGL REQUIRED)

@@ -1,10 +1,9 @@
 #include <iostream>
 #include <GLFW/glfw3.h>
-#include "exercises/triangles.h"
-#include "getting_started/firstWindow.h"
+#include "lessons/getting_started/first_triangle/triangle_tasks.h"
 
 int main() {
-    if ( runExercise( 1 ) < 0 )
+    if ( runET( TRIANGLE_TASK_1 ) < 0 )
     {
         glfwTerminate();
         return -1;
