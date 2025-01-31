@@ -21,6 +21,7 @@ add_executable(
         lessons/getting_started/first_triangle/triangle.cpp
         lessons/getting_started/first_triangle/triangle_tasks.cpp
         lessons/getting_started/first_triangle/triangle_tasks.h
+        lessons/getting_started/shaders/shaders.h
 )
 add_library(
         glad external/glad/src/glad.c
@@ -30,6 +31,7 @@ add_library(
         shared/shader.cpp
         shared/files.h
         shared/files.cpp
+        lessons/getting_started/shaders/shaders.cpp
 )
 
 find_package(OpenGL REQUIRED)

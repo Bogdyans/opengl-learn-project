@@ -199,9 +199,6 @@ int taskT2()
 
 int taskT3()
 {
-    if ( glfwInit() == GLFW_FALSE )
-        return -1;
-
     GLFWwindow* window = initWindow();
     if ( window == nullptr )
         return -1;

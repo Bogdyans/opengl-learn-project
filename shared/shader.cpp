@@ -27,7 +27,7 @@ bool checkShaderCompilationSuccess( unsigned int shader )
     if ( !success )
     {
         glGetShaderInfoLog( shader, 512, nullptr, infoLog );
-        std::cout << "ERROR::SHADER::COMPILATION_FAILED\n" << infoLog << std::endl;
+        std::cout << shader << ": ERROR::SHADER::COMPILATION_FAILED\n" << infoLog << std::endl;
     }
 
     return success;

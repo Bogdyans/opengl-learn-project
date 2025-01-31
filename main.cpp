@@ -1,9 +1,8 @@
-#include <iostream>
 #include <GLFW/glfw3.h>
-#include "lessons/getting_started/first_triangle/triangle_tasks.h"
+#include "lessons/getting_started/shaders/shaders.h"
 
 int main() {
-    if ( runET( TRIANGLE_TASK_3 ) < 0 )
+    if ( runS() < 0 )
     {
         glfwTerminate();
         return -1;
