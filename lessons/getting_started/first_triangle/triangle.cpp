@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include "../../../shared/window.h"
-#include "../../../shared/shader.h"
+#include "../../../lib/Shader.h"
 
 float vertices[] = {
         0.6f,  0.7f, 0.0f,  // top right
@@ -36,23 +36,7 @@ int runT()
     }
     // This part fucking sucks, but not so much now
 
-    unsigned int vertexShader = createShader( TRIANGLE_VERTEX_SHADER, GL_VERTEX_SHADER );
-    if ( vertexShader == 0 ) return -1;
-
-    unsigned int fragmentShader = createShader( TRIANGLE_FRAGMENT_SHADER, GL_FRAGMENT_SHADER );
-    if ( fragmentShader == 0 ) return -1;
-
-    unsigned int shaderProgram;
-    shaderProgram = glCreateProgram();
-
-    glAttachShader( shaderProgram, vertexShader );
-    glAttachShader( shaderProgram, fragmentShader );
-    glLinkProgram( shaderProgram );
-
-    if ( !checkProgramLinkingSuccess( shaderProgram ) )
-        return -1;
-    glDeleteShader( vertexShader );
-    glDeleteShader( fragmentShader );
+    Shader shader( TRIANGLE_VERTEX_SHADER, TRIANGLE_FRAGMENT_SHADER );
 
     unsigned int VBO, VAO, EBO;
     glGenVertexArrays (1, &VAO );
@@ -79,7 +63,7 @@ int runT()
         glClearColor( 0.2f, 0.3f, 0.3f, 1.0f );
         glClear( GL_COLOR_BUFFER_BIT );
 
-        glUseProgram( shaderProgram );
+        shader.use();
         glBindVertexArray( VAO );
         //glDrawArrays( GL_TRIANGLES, 0, 3 );
         glDrawElements( GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0 );
@@ -91,7 +75,7 @@ int runT()
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteBuffers(1, &EBO);
-    glDeleteProgram(shaderProgram);
+    glDeleteProgram(shader.id );
 
     return 0;
 }

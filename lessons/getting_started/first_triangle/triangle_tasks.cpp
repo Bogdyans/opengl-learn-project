@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include "../../../shared/window.h"
-#include "../../../shared/shader.h"
+#include "../../../lib/Shader.h"
 
 
 int runET( TTasks task )
@@ -41,28 +41,7 @@ int taskT1()
         return -1;
     }
 
-    unsigned int vertexShader, fragmentShader;
-    vertexShader = createShader( TRIANGLE_VERTEX_SHADER, GL_VERTEX_SHADER );
-    fragmentShader = createShader( TRIANGLE_FRAGMENT_SHADER, GL_FRAGMENT_SHADER );
-
-    if ( !vertexShader || !fragmentShader )
-    {
-        std::cout << "Failed to compile shaders" << std::endl;
-        return -1;
-    }
-
-    unsigned int shaderProgram;
-    shaderProgram = glCreateProgram();
-
-    glAttachShader( shaderProgram, vertexShader );
-    glAttachShader( shaderProgram, fragmentShader );
-    glLinkProgram( shaderProgram );
-
-    if ( !checkProgramLinkingSuccess( shaderProgram ) )
-        return -1;
-
-    glDeleteShader( vertexShader );
-    glDeleteShader( fragmentShader );
+    Shader shader( TRIANGLE_VERTEX_SHADER, TRIANGLE_FRAGMENT_SHADER );
 
     float vertices[] = {
             -0.6f, 0.5f, 0.0f,
@@ -95,7 +74,7 @@ int taskT1()
         glClearColor( 0.2f, 0.3f, 0.3f, 1.0f );
         glClear( GL_COLOR_BUFFER_BIT );
 
-        glUseProgram( shaderProgram );
+        shader.use();
         glBindVertexArray( VAO );
         glDrawArrays( GL_TRIANGLES, 0, 6 );
 
@@ -105,7 +84,7 @@ int taskT1()
 
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
-    glDeleteProgram(shaderProgram);
+    glDeleteProgram( shader.id );
 
     return 0;
 }
@@ -122,27 +101,7 @@ int taskT2()
         return -1;
     }
 
-    unsigned int vertexShader, fragmentShader;
-    vertexShader = createShader( TRIANGLE_VERTEX_SHADER, GL_VERTEX_SHADER );
-    fragmentShader = createShader( TRIANGLE_FRAGMENT_SHADER, GL_FRAGMENT_SHADER );
-
-    if ( !vertexShader || !fragmentShader )
-    {
-        std::cout << "Failed to compile shaders" << std::endl;
-        return -1;
-    }
-
-    unsigned int shaderProgram;
-    shaderProgram = glCreateProgram();
-
-    glAttachShader( shaderProgram, vertexShader );
-    glAttachShader( shaderProgram, fragmentShader );
-    glLinkProgram( shaderProgram );
-
-    if ( !checkProgramLinkingSuccess( shaderProgram ) )
-        return -1;
-    glDeleteShader( vertexShader );
-    glDeleteShader( fragmentShader );
+    Shader shader( TRIANGLE_VERTEX_SHADER, TRIANGLE_VERTEX_SHADER );
 
     float vertices1[] = {
             -0.6f, 0.5f, 0.0f,
@@ -179,7 +138,7 @@ int taskT2()
         glClearColor( 0.5f, 0.5f, 0.5f, 1.0f );
         glClear( GL_COLOR_BUFFER_BIT );
 
-        glUseProgram( shaderProgram );
+        shader.use();
         glBindVertexArray( VAO[0] );
         glDrawArrays( GL_TRIANGLES, 0, 3 );
 
@@ -190,7 +149,7 @@ int taskT2()
         glfwPollEvents();
     }
 
-    glDeleteProgram( shaderProgram );
+    glDeleteProgram( shader.id );
     glDeleteBuffers( 2, VBO );
     glDeleteVertexArrays( 2, VAO );
 
@@ -209,35 +168,8 @@ int taskT3()
         return -1;
     }
 
-    unsigned int vertexShader, fragmentShader, fragmentShader2;
-    vertexShader = createShader( TRIANGLE_VERTEX_SHADER, GL_VERTEX_SHADER );
-    fragmentShader = createShader( TRIANGLE_FRAGMENT_SHADER, GL_FRAGMENT_SHADER );
-    fragmentShader2 = createShader( TRIANGLE_FRAGMENT_SHADER2, GL_FRAGMENT_SHADER );
-
-    if ( !vertexShader || !fragmentShader || !fragmentShader2 )
-    {
-        std::cout << "Failed to compile shaders" << std::endl;
-        return -1;
-    }
-
-    unsigned int shaderProgram, shaderProgram2;
-
-    shaderProgram = glCreateProgram();
-    glAttachShader( shaderProgram, vertexShader );
-    glAttachShader( shaderProgram, fragmentShader );
-    glLinkProgram( shaderProgram );
-
-    shaderProgram2 = glCreateProgram();
-    glAttachShader( shaderProgram2, vertexShader );
-    glAttachShader( shaderProgram2, fragmentShader2 );
-    glLinkProgram( shaderProgram2 );
-
-    if ( !checkProgramLinkingSuccess( shaderProgram ) || !checkProgramLinkingSuccess( shaderProgram2 ) )
-        return -1;
-
-    glDeleteShader( vertexShader );
-    glDeleteShader( fragmentShader );
-    glDeleteShader( fragmentShader2 );
+    Shader shader( TRIANGLE_VERTEX_SHADER, TRIANGLE_FRAGMENT_SHADER );
+    Shader shader2( TRIANGLE_VERTEX_SHADER, TRIANGLE_FRAGMENT_SHADER2 );
 
     float vertices1[] = {
             -0.6f, 0.5f, 0.0f,
@@ -274,11 +206,11 @@ int taskT3()
         glClearColor( 0.5f, 0.5f, 0.5f, 1.0f );
         glClear( GL_COLOR_BUFFER_BIT );
 
-        glUseProgram( shaderProgram );
+        shader.use();
         glBindVertexArray( VAO[0] );
         glDrawArrays( GL_TRIANGLES, 0, 3 );
 
-        glUseProgram( shaderProgram2 );
+        shader2.use();
         glBindVertexArray( VAO[1] );
         glDrawArrays( GL_TRIANGLES, 0, 3 );
 
@@ -286,8 +218,8 @@ int taskT3()
         glfwPollEvents();
     }
 
-    glDeleteProgram( shaderProgram );
-    glDeleteProgram( shaderProgram2 );
+    glDeleteProgram( shader.id );
+    glDeleteProgram( shader2.id );
     glDeleteBuffers( 2, VBO );
     glDeleteVertexArrays( 2, VAO );
 

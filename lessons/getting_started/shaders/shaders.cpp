@@ -7,7 +7,7 @@
 
 #include "../../../shared/window.h"
 #include "../../../shared/files.h"
-#include "../../../shared/shader.h"
+#include "../../../lib/Shader.h"
 
 int runS()
 {
@@ -24,30 +24,11 @@ int runS()
         return -1;
     }
 
-    unsigned int vertexShader, vertexShader2, fragmentShader, fragmentShader2;
-    vertexShader = createShader( SHADERS_VERTEX_SHADER, GL_VERTEX_SHADER );
-    fragmentShader = createShader( SHADERS_FRAGMENT_SHADER, GL_FRAGMENT_SHADER );
-    vertexShader2 = createShader( SHADERS_VERTEX_SHADER2, GL_VERTEX_SHADER );
-    fragmentShader2 = createShader( SHADERS_FRAGMENT_SHADER2, GL_FRAGMENT_SHADER );
+    Shader shaderProgram( SHADERS_VERTEX_SHADER, SHADERS_FRAGMENT_SHADER );
+    Shader shaderProgram2( SHADERS_VERTEX_SHADER2, SHADERS_FRAGMENT_SHADER2 );
 
-    unsigned int shaderProgram, shaderProgram2;
-    shaderProgram = glCreateProgram();
-    glAttachShader( shaderProgram, vertexShader );
-    glAttachShader( shaderProgram, fragmentShader );
-    glLinkProgram( shaderProgram );
-
-    shaderProgram2 = glCreateProgram();
-    glAttachShader( shaderProgram2, vertexShader2 );
-    glAttachShader( shaderProgram2, fragmentShader2 );
-    glLinkProgram( shaderProgram2 );
-
-
-    if ( !checkProgramLinkingSuccess( shaderProgram ) || !checkProgramLinkingSuccess( shaderProgram2 ) )
+    if ( !shaderProgram.id || !shaderProgram2.id )
         return -1;
-    glDeleteShader( vertexShader );
-    glDeleteShader( fragmentShader );
-    glDeleteShader( vertexShader2 );
-    glDeleteShader( fragmentShader2 );
 
     float vertices1[] = {
             -1.0f, -0.5f, 0.0f,
@@ -91,16 +72,16 @@ int runS()
         glClearColor( 0.2f, 0.3f, 0.3f, 1.0f );
         glClear( GL_COLOR_BUFFER_BIT );
 
-        glUseProgram( shaderProgram );
+        shaderProgram.use();
 
         float timeValue = glfwGetTime();
         float greenValue =  sin(timeValue) / 2.0  + 0.5f;
-        int vertexColorLocation = glGetUniformLocation( shaderProgram, "ourColor" );
+        int vertexColorLocation = glGetUniformLocation( shaderProgram.id, "ourColor" );
         glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
         glBindVertexArray( VAO[0] );
         glDrawArrays( GL_TRIANGLES, 0, 3 );
 
-        glUseProgram( shaderProgram2 );
+        shaderProgram2.use();
         glBindVertexArray( VAO[1] );
         glDrawArrays( GL_TRIANGLES, 0, 3 );
 
@@ -108,10 +89,10 @@ int runS()
         glfwPollEvents();
     }
 
-    glDeleteVertexArrays(2, VAO);
-    glDeleteBuffers(2, VBO);
-    glDeleteProgram(shaderProgram);
-    glDeleteProgram(shaderProgram2);
+    glDeleteVertexArrays( 2, VAO );
+    glDeleteBuffers( 2, VBO );
+    glDeleteProgram( shaderProgram.id );
+    glDeleteProgram( shaderProgram2.id );
 
     return 0;
 }
