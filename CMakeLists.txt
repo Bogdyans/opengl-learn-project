@@ -15,8 +15,8 @@ link_directories(
 
 add_executable(
         opengl_learn main.cpp
-        lessons/getting_started/first_window/firstWindow.cpp
-        lessons/getting_started/first_window/firstWindow.h
+        lessons/getting_started/first_window/first_window.cpp
+        lessons/getting_started/first_window/first_window.h
         lessons/getting_started/first_triangle/triangle.h
         lessons/getting_started/first_triangle/triangle.cpp
         lessons/getting_started/first_triangle/triangle_tasks.cpp

@@ -2,7 +2,7 @@
 #include "lessons/getting_started/shaders/shaders.h"
 
 int main() {
-    if ( runS(  ) < 0 )
+    if ( Shaders::run() < 0 )
     {
         glfwTerminate();
         return -1;

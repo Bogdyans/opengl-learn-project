@@ -5,6 +5,8 @@
 
 #include "../../../shared/files.h"
 
-int runT();
+namespace Triangle {
+    int run();
+}
 
 #endif //OPENGL_LEARN_TRIANGLE_H

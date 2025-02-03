@@ -1,6 +1,11 @@
 #ifndef OPENGL_LEARN_SHADERS_H
 #define OPENGL_LEARN_SHADERS_H
 
-int runS();
+
+namespace Shaders {
+
+    int run();
+
+}
 
 #endif //OPENGL_LEARN_SHADERS_H
