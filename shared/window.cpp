@@ -31,4 +31,3 @@ GLFWwindow* initWindow(
 
     return window;
 }
-

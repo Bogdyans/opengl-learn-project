@@ -8,6 +8,31 @@
 #include "../../../shared/window.h"
 #include "../../../shared/files.h"
 #include "../../../lib/Shader.h"
+float velocity[] = {0.0f, 0.0f};
+
+
+void processInputS( GLFWwindow* window )
+{
+    if ( glfwGetKey( window, GLFW_KEY_ESCAPE ) == GLFW_PRESS )
+        glfwSetWindowShouldClose( window, GLFW_TRUE );
+
+    if ( glfwGetKey( window, GLFW_KEY_UP ) == GLFW_PRESS )
+        velocity[1] = 0.008;
+    else if ( glfwGetKey( window, GLFW_KEY_DOWN ) == GLFW_PRESS )
+        velocity[1] = -0.008;
+    else
+        velocity[1] = 0;
+
+    if ( glfwGetKey( window, GLFW_KEY_RIGHT ) == GLFW_PRESS )
+        velocity[0] = 0.008;
+    else if ( glfwGetKey( window, GLFW_KEY_LEFT ) == GLFW_PRESS )
+        velocity[0] = -0.008;
+    else
+        velocity[0] = 0;
+
+}
+
+
 
 int runS()
 {
@@ -37,9 +62,9 @@ int runS()
     };
     float vertices2[] = {
             //position                       color
-            0.0f, 0.5f, 0.0f,   1.0f, 0.0f, 0.0f,
-            0.8f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f,
-            0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f
+            0.0f, 0.3f, 0.0f,   1.0f, 0.0f, 0.0f,
+            -0.3f, -0.3f, 0.0f,   0.0f, 1.0f, 0.0f,
+            0.3f, -0.3f, 0.0f, 0.0f, 0.0f, 1.0f
     };
 
     unsigned int VBO[2], VAO[2];
@@ -67,8 +92,14 @@ int runS()
 
     //glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 
+    float offset[] = {
+            0.0f, 0.0f, 0.0f
+    };
+
     while ( !glfwWindowShouldClose(window) )
     {
+        processInputS( window );
+
         glClearColor( 0.2f, 0.3f, 0.3f, 1.0f );
         glClear( GL_COLOR_BUFFER_BIT );
 
@@ -77,13 +108,24 @@ int runS()
         float timeValue = glfwGetTime();
         float greenValue =  sin(timeValue) / 2.0  + 0.5f;
         int vertexColorLocation = glGetUniformLocation( shaderProgram.id, "ourColor" );
-        glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
+        glUniform4f( vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f );
+
+        int vertexOffsetLocation = glGetUniformLocation( shaderProgram.id, "offset" );
+        glUniform3f( vertexOffsetLocation, offset[0], offset[1], offset[2] );
         glBindVertexArray( VAO[0] );
         glDrawArrays( GL_TRIANGLES, 0, 3 );
 
+
+
         shaderProgram2.use();
+
+        int vertexOffsetLocation2 = glGetUniformLocation( shaderProgram2.id, "offset" );
+        glUniform3f( vertexOffsetLocation2, offset[0], offset[1], offset[2] );
         glBindVertexArray( VAO[1] );
         glDrawArrays( GL_TRIANGLES, 0, 3 );
+
+        offset[0] += velocity[0];
+        offset[1] += velocity[1];
 
         glfwSwapBuffers(window);
         glfwPollEvents();
