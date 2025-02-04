@@ -2,7 +2,8 @@
 #define OPENGL_LEARN_SHADERS_H
 
 
-namespace Shaders {
+namespace Shaders
+{
 
     int run();
 

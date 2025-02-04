@@ -3,7 +3,8 @@
 
 #include "../../../shared/files.h"
 
-namespace TriangleTasks {
+namespace TriangleTasks
+{
     enum TTasks {
         TRIANGLE_TASK_1,
         TRIANGLE_TASK_2,

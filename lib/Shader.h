@@ -1,5 +1,5 @@
-#ifndef SHADER_H
-#define SHADER_H
+#ifndef OL_SHADER_H
+#define OL_SHADER_H
 
 #include <glad/glad.h>
 
@@ -9,12 +9,13 @@
 #include <iostream>
 
 class Shader {
+
 public:
     unsigned int id;
 
     Shader( const char* vertexPath, const char* fragmentPath );
 
-    void use();
+    void use() const;
 
     void setBool( const std::string &name, bool value ) const;
     void setInt( const std::string &name, int value ) const;
@@ -22,4 +23,4 @@ public:
 };
 
 
-#endif //SHADER_H
+#endif //OL_SHADER_H
