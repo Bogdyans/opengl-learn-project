@@ -10,19 +10,31 @@
 class Window {
 
 private:
-    GLFWwindow* instance;
+    GLFWwindow* m_instance;
 
-    int width;
-    int height;
-    const char* title;
+    int m_width;
+    int m_height;
+    const char* m_title;
+
+    bool m_hinted = false;
+
+    static void windowHints();
+    static GLFWwindow* createWindow( int width, int height, const char *title );
+    void makeContextCurrent();
 
 public:
     Window( int width, int height, const char* title );
 
-    [[nodiscard]] GLFWwindow* get() const { return instance; };
-    [[nodiscard]] int getWidth() const { return width; }
-    [[nodiscard]] int getHeight() const { return height; }
-    [[nodiscard]] const char* getTitle() const { return title; }
+    void close() { glfwSetWindowShouldClose( m_instance, GLFW_TRUE ); }
+    void processInput( void (* func)( GLFWwindow* ) );
+
+    void setFramebufferSizeCallback( GLFWframebuffersizefun callback );
+
+    [[nodiscard]] bool shouldClose() const { return glfwWindowShouldClose( m_instance ); }
+    [[nodiscard]] GLFWwindow* get() const { return m_instance; }
+    [[nodiscard]] int getWidth() const { return m_width; }
+    [[nodiscard]] int getHeight() const { return m_height; }
+    [[nodiscard]] const char* getTitle() const { return m_title; }
 };
 
 

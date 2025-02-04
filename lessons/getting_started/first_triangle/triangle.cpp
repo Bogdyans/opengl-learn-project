@@ -3,7 +3,7 @@
 #include "glad/glad.h"
 #include <iostream>
 
-#include "../../../shared/window.h"
+#include "../../../lib/Window.h"
 #include "../../../lib/Shader.h"
 
 namespace Triangle
@@ -29,7 +29,7 @@ namespace Triangle
 
             return -1;
         }
-        GLFWwindow *window = initWindow();
+        Window window = Window( 800, 600, "First Triangle" );
 
         if ( !gladLoadGLLoader( (GLADloadproc) glfwGetProcAddress ) )
         {
@@ -60,7 +60,7 @@ namespace Triangle
 
         glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 
-        while ( !glfwWindowShouldClose( window ) )
+        while ( !window.shouldClose() )
         {
             glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
@@ -70,7 +70,7 @@ namespace Triangle
             //glDrawArrays( GL_TRIANGLES, 0, 3 );
             glDrawElements( GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0 );
 
-            glfwSwapBuffers( window );
+            glfwSwapBuffers( window.get() );
             glfwPollEvents();
         }
 

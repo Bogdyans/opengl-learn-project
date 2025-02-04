@@ -3,7 +3,7 @@
 #include "glad/glad.h"
 #include <iostream>
 
-#include "../../../shared/window.h"
+#include "../../../lib/Window.h"
 #include "../../../lib/Shader.h"
 
 namespace TriangleTasks
@@ -34,8 +34,8 @@ namespace TriangleTasks
 
     int taskT1()
     {
-        GLFWwindow *window = initWindow();
-        if ( window == nullptr )
+        Window window = Window( 800, 600, "Task" ) ;
+        if ( window.get() == nullptr )
             return -1;
 
         if ( !gladLoadGLLoader( (GLADloadproc) glfwGetProcAddress ) )
@@ -72,7 +72,7 @@ namespace TriangleTasks
 
         glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 
-        while ( !glfwWindowShouldClose( window ) )
+        while ( !window.shouldClose() )
         {
             glClearColor( 0.2f, 0.3f, 0.3f, 1.0f );
             glClear( GL_COLOR_BUFFER_BIT );
@@ -81,7 +81,7 @@ namespace TriangleTasks
             glBindVertexArray( VAO );
             glDrawArrays( GL_TRIANGLES, 0, 6 );
 
-            glfwSwapBuffers( window );
+            glfwSwapBuffers( window.get() );
             glfwPollEvents();
         }
 
@@ -94,8 +94,8 @@ namespace TriangleTasks
 
     int taskT2()
     {
-        GLFWwindow *window = initWindow();
-        if (window == nullptr)
+        Window window = Window( 800, 600, "Task2" );
+        if ( window.get() == nullptr )
             return -1;
 
         if ( !gladLoadGLLoader( (GLADloadproc) glfwGetProcAddress ) )
@@ -136,7 +136,7 @@ namespace TriangleTasks
 
         glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 
-        while ( !glfwWindowShouldClose( window ) )
+        while ( !window.shouldClose() )
         {
             glClearColor( 0.5f, 0.5f, 0.5f, 1.0f );
             glClear( GL_COLOR_BUFFER_BIT );
@@ -148,7 +148,7 @@ namespace TriangleTasks
             glBindVertexArray( VAO[1] );
             glDrawArrays( GL_TRIANGLES, 0, 3 );
 
-            glfwSwapBuffers( window );
+            glfwSwapBuffers( window.get() );
             glfwPollEvents();
         }
 
@@ -161,8 +161,8 @@ namespace TriangleTasks
 
     int taskT3()
     {
-        GLFWwindow *window = initWindow();
-        if ( window == nullptr )
+        Window window = Window( 800, 600, "Task3" );
+        if ( window.get() == nullptr )
             return -1;
 
         if ( !gladLoadGLLoader( (GLADloadproc) glfwGetProcAddress ) )
@@ -204,7 +204,7 @@ namespace TriangleTasks
 
         //glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 
-        while ( !glfwWindowShouldClose( window ) )
+        while ( !window.shouldClose() )
         {
             glClearColor( 0.5f, 0.5f, 0.5f, 1.0f );
             glClear( GL_COLOR_BUFFER_BIT );
@@ -217,7 +217,7 @@ namespace TriangleTasks
             glBindVertexArray( VAO[1] );
             glDrawArrays( GL_TRIANGLES, 0, 3 );
 
-            glfwSwapBuffers( window );
+            glfwSwapBuffers( window.get() );
             glfwPollEvents();
         }
 

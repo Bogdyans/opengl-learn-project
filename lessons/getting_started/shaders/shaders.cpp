@@ -5,7 +5,7 @@
 #include <iostream>
 #include <valarray>
 
-#include "../../../shared/window.h"
+#include "../../../lib/Window.h"
 #include "../../../shared/files.h"
 #include "../../../lib/Shader.h"
 
@@ -42,15 +42,22 @@ namespace Shaders
         if ( glfwInit() == GLFW_FALSE )
             return -1;
 
-        GLFWwindow *window = initWindow();
-        if ( window == nullptr )
+        Window window = Window( 800, 600, "Shaders" );
+        if ( window.get() == nullptr )
             return -1;
+
+        window.setFramebufferSizeCallback(
+                []( auto window, auto width, auto height ) -> void
+                {
+                    glViewport( 0, 0, width, height );
+                });
 
         if ( !gladLoadGLLoader( (GLADloadproc) glfwGetProcAddress ) )
         {
             std::cout << "Failed to initialize GLAD" << std::endl;
             return -1;
         }
+
 
         Shader shaderProgram( SHADERS_VERTEX_SHADER, SHADERS_FRAGMENT_SHADER );
         Shader shaderProgram2( SHADERS_VERTEX_SHADER2, SHADERS_FRAGMENT_SHADER2 );
@@ -99,8 +106,8 @@ namespace Shaders
                 0.0f, 0.0f, 0.0f
         };
 
-        while ( !glfwWindowShouldClose( window ) ) {
-            processInput( window );
+        while ( !window.shouldClose() ) {
+            window.processInput( processInput );
 
             glClearColor( 0.2f, 0.3f, 0.3f, 1.0f );
             glClear( GL_COLOR_BUFFER_BIT );
@@ -128,7 +135,7 @@ namespace Shaders
             offset[0] += velocity[0];
             offset[1] += velocity[1];
 
-            glfwSwapBuffers( window );
+            glfwSwapBuffers( window.get() );
             glfwPollEvents();
         }
 

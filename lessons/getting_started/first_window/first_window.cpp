@@ -2,16 +2,12 @@
 #include <cstdio>
 
 #include "first_window.h"
-#include "../../../shared/window.h"
+#include "../../../lib/Window.h"
 
 
-namespace Window
+namespace window
 {
 
-    void framebuffer_size_callback( GLFWwindow *window, int width, int height )
-    {
-        glViewport( 0, 0, width, height );
-    }
 
     static void processInput( GLFWwindow *window )
     {
@@ -30,13 +26,12 @@ namespace Window
             return -1;
         }
 
-        GLFWwindow *window = initWindow();
-        if ( window == nullptr )
+        Window window = Window( 800, 600, "First Window" );
+        if ( window.get() == nullptr )
         {
             printf( "Error creating window" );
             return -1;
         }
-        glfwMakeContextCurrent( window );
 
         if ( !gladLoadGLLoader( (GLADloadproc) glfwGetProcAddress ) )
         {
@@ -45,16 +40,20 @@ namespace Window
         }
 
         //glViewport( 0, 0, 800, 600 );
-        glfwSetFramebufferSizeCallback( window, framebuffer_size_callback );
+        window.setFramebufferSizeCallback(
+                []( auto window, auto width, auto height ) -> void
+                    {
+                        glViewport( 0, 0, width, height );
+                    });
 
-        while ( !glfwWindowShouldClose( window ) )
+        while ( !window.shouldClose() )
         {
-            processInput( window );
+            window.processInput( processInput );
 
             glClearColor( 0.2f, 0.3f, 0.3f, 1.0f );
             glClear( GL_COLOR_BUFFER_BIT );
 
-            glfwSwapBuffers( window );
+            glfwSwapBuffers( window.get() );
             glfwPollEvents();
         }
 
