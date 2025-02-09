@@ -5,7 +5,7 @@
 
 #include "../../../shared/files.h"
 
-namespace Triangle
+namespace triangle
 {
 
     int run();

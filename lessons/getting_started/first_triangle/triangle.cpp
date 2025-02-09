@@ -6,7 +6,7 @@
 #include "../../../lib/Window.h"
 #include "../../../lib/Shader.h"
 
-namespace Triangle
+namespace triangle
 {
     float vertices[] = {
             0.6f, 0.7f, 0.0f,  // top right

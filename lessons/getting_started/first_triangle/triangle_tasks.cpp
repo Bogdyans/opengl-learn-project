@@ -6,7 +6,7 @@
 #include "../../../lib/Window.h"
 #include "../../../lib/Shader.h"
 
-namespace TriangleTasks
+namespace triangle_tasks
 {
 
     int run( TTasks task )

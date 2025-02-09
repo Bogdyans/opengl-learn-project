@@ -10,7 +10,7 @@
 #include "../../../lib/Shader.h"
 
 
-namespace Shaders
+namespace shaders
 {
 
     float velocity[] = { 0.0f, 0.0f };
@@ -46,18 +46,17 @@ namespace Shaders
         if ( window.get() == nullptr )
             return -1;
 
-        window.setFramebufferSizeCallback(
-                []( auto window, auto width, auto height ) -> void
-                {
-                    glViewport( 0, 0, width, height );
-                });
-
         if ( !gladLoadGLLoader( (GLADloadproc) glfwGetProcAddress ) )
         {
             std::cout << "Failed to initialize GLAD" << std::endl;
             return -1;
         }
 
+        window.setFramebufferSizeCallback(
+                []( auto window, auto width, auto height ) -> void
+                {
+                    glViewport( 0, 0, width, height );
+                });
 
         Shader shaderProgram( SHADERS_VERTEX_SHADER, SHADERS_FRAGMENT_SHADER );
         Shader shaderProgram2( SHADERS_VERTEX_SHADER2, SHADERS_FRAGMENT_SHADER2 );

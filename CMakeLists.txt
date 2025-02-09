@@ -10,7 +10,6 @@ include_directories(
 
 link_directories(
         "C:/Mine/work/gamedev/cpp/libs/glfw-3.4.bin.WIN64/lib-mingw-w64"
-        "C:/Mine/work/gamedev/cpp/libs/glew-2.1.0/lib/Release/x64"
 )
 
 add_executable(
@@ -23,6 +22,7 @@ add_executable(
         lessons/getting_started/first_triangle/triangle_tasks.h
         lessons/getting_started/shaders/shaders.h
         lessons/getting_started/shaders/shaders.cpp
+        lessons/getting_started/textures/texture.cpp
 )
 add_library(
         glad external/glad/src/glad.c
@@ -32,6 +32,8 @@ add_library(
         lib/Shader.h
         lib/Window.cpp
         lib/Window.h
+        external/stb/stb_image.h
+        external/stb/stb_image.cpp
 )
 
 find_package(OpenGL REQUIRED)
@@ -39,13 +41,6 @@ find_package(OpenGL REQUIRED)
 target_link_libraries(opengl_learn
         glad
         glfw3
-        glew32
         ${OPENGL_LIBRARIES}
 )
 
-# Copy GLEW DLL to output directory
-add_custom_command(TARGET opengl_learn POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "C:/Mine/work/gamedev/cpp//libs/glew-2.1.0/bin/Release/x64/glew32.dll"
-        $<TARGET_FILE_DIR:opengl_learn>
-)

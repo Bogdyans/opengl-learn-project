@@ -1,4 +1,5 @@
 #include "Shader.h"
+#include <iostream>
 
 std::string* readFile( const char* filePath )
 {
@@ -90,6 +91,7 @@ Shader::Shader( const char* vertexPath, const char* fragmentPath )
     {
         deleteShader( vShader );
         deleteShader( fShader );
+        std::cout << "Failed to compile shader";
         id = 0;
         return;
     }

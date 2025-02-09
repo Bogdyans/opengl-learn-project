@@ -1,7 +1,7 @@
 #ifndef OPENGL_LEARN_TEXTURES
 #define OPENGL_LEARN_TEXTURES
 
-namespace Textures
+namespace textures
 {
 
     int run();
