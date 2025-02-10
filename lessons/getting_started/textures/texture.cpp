@@ -12,6 +12,7 @@
 namespace textures
 {
     float velocity[] = { 0.0f, 0.0f };
+    float scale = 1.0;
 
     static void processInput( GLFWwindow *window )
     {
@@ -32,6 +33,14 @@ namespace textures
         else
             velocity[0] = 0;
 
+        if ( glfwGetKey( window, GLFW_KEY_W ) == GLFW_PRESS )
+            scale += 0.001;
+        else if ( glfwGetKey( window, GLFW_KEY_S ) == GLFW_PRESS )
+            scale -= 0.001;
+    }
+
+    void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
+        scale += yoffset*0.1;
     }
 
     int run()
@@ -93,6 +102,8 @@ namespace textures
         glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
         glEnableVertexAttribArray(2);
 
+        stbi_set_flip_vertically_on_load(true);
+
         unsigned int texture, texture1;
         glGenTextures(1, &texture);
         glBindTexture(GL_TEXTURE_2D, texture); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
@@ -149,6 +160,7 @@ namespace textures
         while ( !window.shouldClose() )
         {
             window.processInput( processInput );
+            glfwSetScrollCallback( window.get(), scroll_callback );
 
             glClearColor( 0.2f, 0.3f, 0.3f, 1.0f );
             glClear( GL_COLOR_BUFFER_BIT );
@@ -163,6 +175,9 @@ namespace textures
 
             int vertexOffsetLocation = glGetUniformLocation( shader.id, "offset" );
             glUniform2f( vertexOffsetLocation, velocity[0], velocity[1] );
+
+            shader.setFloat( "scale", scale );
+
             glBindVertexArray( VAO );
             glDrawElements( GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0 );
 

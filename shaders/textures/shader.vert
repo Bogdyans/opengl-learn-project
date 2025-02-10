@@ -8,9 +8,11 @@ out vec2 TexCoord;
 
 uniform vec2 offset;
 
+uniform float scale;
+
 void main()
 {
-    gl_Position = vec4(aPos.xy + offset.xy, aPos.z, 1.0);
+    gl_Position = vec4((aPos.xy + offset.xy)*scale, aPos.z, 1.0);
     ourColor = aColor;
     TexCoord = aTexCoord;
 }
