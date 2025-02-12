@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD 20)
 
 include_directories(
         "C:/Mine/work/gamedev/cpp/libs/glfw-3.4.bin.WIN64/include"
+        "C:/Mine/work/gamedev/cpp/libs/glm/glm-1.0.0"
         external/glad/include
 )
 

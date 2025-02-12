@@ -3,16 +3,20 @@
 #include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include "../../../external/stb/stb_image.h"
 
 #include "../../../lib/Window.h"
 #include "../../../shared/files.h"
 #include "../../../lib/Shader.h"
 
+
 namespace textures
 {
     float velocity[] = { 0.0f, 0.0f };
-    float scale = 1.0;
+    double scale = 1.0;
 
     static void processInput( GLFWwindow *window )
     {
@@ -33,20 +37,16 @@ namespace textures
         else
             velocity[0] = 0;
 
+
+
         if ( glfwGetKey( window, GLFW_KEY_W ) == GLFW_PRESS )
             scale += 0.001;
         else if ( glfwGetKey( window, GLFW_KEY_S ) == GLFW_PRESS )
             scale -= 0.001;
     }
 
-    void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
-        scale += yoffset*0.1;
-    }
-
     int run()
     {
-
-
         if ( glfwInit() == GLFW_FALSE )
             return -1;
 
@@ -70,10 +70,10 @@ namespace textures
 
         float vertices[] = {
                 // positions                           // colors                            // texture coords
-                0.5f,  0.5f,   0.0f,      1.0f, 0.0f,   0.0f,      1.0f,  1.0f,   // top right
-                0.5f,  -0.5f, 0.0f,      0.0f, 1.0f,  0.0f,     1.0f, 0.0f,   // bottom right
+                0.5f,  0.5f,   0.0f,      1.0f, 0.0f,   0.0f,      2.0f,  2.0f,   // top right
+                0.5f,  -0.5f, 0.0f,      0.0f, 1.0f,  0.0f,     2.0f, 0.0f,   // bottom right
                 -0.5f, -0.5f, 0.0f,      0.0f, 0.0f, 1.0f,     0.0f, 0.0f,   // bottom left
-                -0.5f, 0.5f, 0.0f,      1.0f, 1.0f, 0.0f,     0.0f, 1.0f    // top left
+                -0.5f, 0.5f, 0.0f,      1.0f, 1.0f, 0.0f,     0.0f, 2.0f    // top left
         };
         unsigned int indices[] = {
                 3, 1, 2,
@@ -142,7 +142,6 @@ namespace textures
         unsigned char *data1 = stbi_load( "C:/Mine/work/programming/projects/C++/opengl-learn/files/textures/ustal.jpg", &width1, &height1, &nrChannels1, 0);
         if ( data1 )
         {
-            std::cout << nrChannels;
             glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width1, height1, 0, GL_RGB, GL_UNSIGNED_BYTE, data1 );
             glGenerateMipmap( GL_TEXTURE_2D );
         }
@@ -156,13 +155,32 @@ namespace textures
         shader.setInt( "ourTexture", 0 );
         shader.setInt( "otherTexture", 1 );
 
+        // Transformation
+        glm::vec4 vec( 1.0f, 0.0f, 0.0f, 1.0f );
+        auto trans = glm::mat4( 1.0f );
+        trans = glm::translate( trans, glm::vec3( 1.0f, 1.0f, 0.0f ) );
+        vec = trans * vec;
+        std::cout << vec.x << vec.y << vec.z << std::endl;
+
+        auto trans2 = glm::mat4(1.0f);
+        trans2 = glm::rotate( trans2, glm::radians(90.0f), glm::vec3( 0.0f, 0.0f, 1.0f ) );
+        trans2 = glm::scale( trans2, glm::vec3( 0.5, 0.5, 0.5 ) );
+
+        unsigned int transformLoc = glGetUniformLocation( shader.id, "transform" );
+        glUniformMatrix4fv( transformLoc, 1, GL_FALSE, glm::value_ptr( trans2 ));
+        //End of transormation
 
         while ( !window.shouldClose() )
         {
             window.processInput( processInput );
-            glfwSetScrollCallback( window.get(), scroll_callback );
+            glfwSetScrollCallback(
+                    window.get(),
+                    []( GLFWwindow* window, double xoff, double yoff ) -> void
+                    {
+                        scale += yoff*0.01;
+                    });
 
-            glClearColor( 0.2f, 0.3f, 0.3f, 1.0f );
+                    glClearColor( 0.2f, 0.3f, 0.3f, 1.0f );
             glClear( GL_COLOR_BUFFER_BIT );
 
             glActiveTexture( GL_TEXTURE0 );
@@ -177,6 +195,13 @@ namespace textures
             glUniform2f( vertexOffsetLocation, velocity[0], velocity[1] );
 
             shader.setFloat( "scale", scale );
+
+            //transformation
+            auto transRotate = glm::mat4( 1.0f );
+            transRotate = glm::translate( transRotate, glm::vec3( 0.1f, 0.1f, 0.0f ) );
+            transRotate = glm::rotate( transRotate, (float)glfwGetTime()*2, glm::vec3( 0.0f, 0.0f, 1.0f ) );
+            glUniformMatrix4fv( transformLoc, 1, GL_FALSE, glm::value_ptr( transRotate ));
+            //transformation
 
             glBindVertexArray( VAO );
             glDrawElements( GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0 );
@@ -194,5 +219,4 @@ namespace textures
         glfwTerminate();
         return 0;
     }
-
 }
