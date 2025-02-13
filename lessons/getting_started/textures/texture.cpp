@@ -139,7 +139,7 @@ namespace textures
         // load image, create texture and generate mipmaps
         int width1, height1, nrChannels1;
         // The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
-        unsigned char *data1 = stbi_load( "C:/Mine/work/programming/projects/C++/opengl-learn/files/textures/ustal.jpg", &width1, &height1, &nrChannels1, 0);
+        unsigned char *data1 = stbi_load( "C:/Mine/work/programming/projects/C++/opengl-learn/files/textures/pepe.png", &width1, &height1, &nrChannels1, 0);
         if ( data1 )
         {
             glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width1, height1, 0, GL_RGB, GL_UNSIGNED_BYTE, data1 );
@@ -198,12 +198,19 @@ namespace textures
 
             //transformation
             auto transRotate = glm::mat4( 1.0f );
-            transRotate = glm::translate( transRotate, glm::vec3( 0.1f, 0.1f, 0.0f ) );
-            transRotate = glm::rotate( transRotate, (float)glfwGetTime()*2, glm::vec3( 0.0f, 0.0f, 1.0f ) );
+            transRotate = glm::translate( transRotate, glm::vec3( 0.3f, -0.3f, 0.0f ) );
+            transRotate = glm::rotate( transRotate, (float)glfwGetTime(), glm::vec3( 0.0f, 0.0f, 1.0f ) );
             glUniformMatrix4fv( transformLoc, 1, GL_FALSE, glm::value_ptr( transRotate ));
             //transformation
 
             glBindVertexArray( VAO );
+            glDrawElements( GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0 );
+
+            auto transOffset = glm::mat4( 1.0f );
+            transOffset = glm::translate( transOffset, glm::vec3( -0.5f, 0.5f, 0.0f ) );
+            transOffset = glm::scale( transOffset, glm::vec3( sin(glfwGetTime()), sin(glfwGetTime()), 1.0f ) );
+            glUniformMatrix4fv( transformLoc, 1, GL_FALSE, glm::value_ptr( transOffset ) );
+
             glDrawElements( GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0 );
 
 

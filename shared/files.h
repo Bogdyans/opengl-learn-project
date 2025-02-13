@@ -20,5 +20,6 @@ extern const char* TEXTURES_FRAGMENT_SHADER;
 
 extern const char* BRICK_WALL_TEXTURE;
 extern const char* WOODEN_CONTAINER_TEXTURE;
+extern const char* PEPE_TEXTURE;
 
 #endif //OPENGL_LEARN_FILES_H

@@ -17,3 +17,4 @@ const char* TEXTURES_FRAGMENT_SHADER = "../shaders/textures/shader.frag";
 
 const char* BRICK_WALL_TEXTURE  = "../files/textures/brick_wall.png";
 const char* WOODEN_CONTAINER_TEXTURE = "../files/textures/wooden_container.png";
+const char* PEPE_TEXTURE = "../files/textures/pepe.png";
