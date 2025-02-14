@@ -80,43 +80,47 @@ namespace textures
                 3, 0, 1
         };
         unsigned int VAO, VBO, EBO;
-        glGenVertexArrays(1, &VAO);
-        glGenBuffers(1, &VBO);
-        glGenBuffers(1, &EBO);
+        glGenVertexArrays( 1, &VAO );
+        glGenBuffers( 1, &VBO );
+        glGenBuffers( 1, &EBO );
 
-        glBindVertexArray(VAO);
+        glBindVertexArray( VAO );
 
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+        glBindBuffer( GL_ARRAY_BUFFER, VBO );
+        glBufferData( GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW );
 
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, EBO );
+        glBufferData( GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW );
 
         // position attribute
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)nullptr);
-        glEnableVertexAttribArray(0);
-        // color attribute
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-        glEnableVertexAttribArray(1);
-        // texture coord attribute
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-        glEnableVertexAttribArray(2);
+        glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)nullptr );
+        glEnableVertexAttribArray( 0 );
 
-        stbi_set_flip_vertically_on_load(true);
+        // color attribute
+        glVertexAttribPointer( 1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)) );
+        glEnableVertexAttribArray( 1 );
+
+        // texture coord attribute
+        glVertexAttribPointer( 2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)) );
+        glEnableVertexAttribArray( 2 );
+
+        stbi_set_flip_vertically_on_load( true );
 
         unsigned int texture, texture1;
-        glGenTextures(1, &texture);
-        glBindTexture(GL_TEXTURE_2D, texture); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
+        glGenTextures( 1, &texture );
+        glBindTexture( GL_TEXTURE_2D, texture ); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
+
         // set the texture wrapping parameters
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+
         // set texture filtering parameters
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        // load image, create texture and generate mipmaps
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR );
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+
         int width, height, nrChannels;
-        // The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
-        unsigned char *data = stbi_load( "C:/Mine/work/programming/projects/C++/opengl-learn/files/textures/wooden_container.png", &width, &height, &nrChannels, 0);
+
+        unsigned char *data = stbi_load( "C:/Mine/work/programming/projects/C++/opengl-learn/files/textures/wooden_container.png", &width, &height, &nrChannels, 0 );
         if ( data )
         {
             glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data );
@@ -128,18 +132,21 @@ namespace textures
         }
         stbi_image_free( data );
 
-        glGenTextures(1, &texture1);
-        glBindTexture(GL_TEXTURE_2D, texture1); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
+        glGenTextures( 1, &texture1 );
+        glBindTexture( GL_TEXTURE_2D, texture1 ); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
+
         // set the texture wrapping parameters
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT );	// set texture wrapping to GL_REPEAT (default wrapping method)
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT );
+
         // set texture filtering parameters
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST );
+        glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+
         // load image, create texture and generate mipmaps
         int width1, height1, nrChannels1;
-        // The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
-        unsigned char *data1 = stbi_load( "C:/Mine/work/programming/projects/C++/opengl-learn/files/textures/pepe.png", &width1, &height1, &nrChannels1, 0);
+
+        unsigned char *data1 = stbi_load( "C:/Mine/work/programming/projects/C++/opengl-learn/files/textures/ustal.jpg", &width1, &height1, &nrChannels1, 0 );
         if ( data1 )
         {
             glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width1, height1, 0, GL_RGB, GL_UNSIGNED_BYTE, data1 );
@@ -155,20 +162,7 @@ namespace textures
         shader.setInt( "ourTexture", 0 );
         shader.setInt( "otherTexture", 1 );
 
-        // Transformation
-        glm::vec4 vec( 1.0f, 0.0f, 0.0f, 1.0f );
-        auto trans = glm::mat4( 1.0f );
-        trans = glm::translate( trans, glm::vec3( 1.0f, 1.0f, 0.0f ) );
-        vec = trans * vec;
-        std::cout << vec.x << vec.y << vec.z << std::endl;
-
-        auto trans2 = glm::mat4(1.0f);
-        trans2 = glm::rotate( trans2, glm::radians(90.0f), glm::vec3( 0.0f, 0.0f, 1.0f ) );
-        trans2 = glm::scale( trans2, glm::vec3( 0.5, 0.5, 0.5 ) );
-
-        unsigned int transformLoc = glGetUniformLocation( shader.id, "transform" );
-        glUniformMatrix4fv( transformLoc, 1, GL_FALSE, glm::value_ptr( trans2 ));
-        //End of transormation
+        int transformLoc = glGetUniformLocation(  shader.id, "transform" );
 
         while ( !window.shouldClose() )
         {
@@ -198,9 +192,9 @@ namespace textures
 
             //transformation
             auto transRotate = glm::mat4( 1.0f );
-            transRotate = glm::translate( transRotate, glm::vec3( 0.3f, -0.3f, 0.0f ) );
+            transRotate = glm::translate( transRotate, glm::vec3( 0.5f, -0.5f, 0.0f ) );
             transRotate = glm::rotate( transRotate, (float)glfwGetTime(), glm::vec3( 0.0f, 0.0f, 1.0f ) );
-            glUniformMatrix4fv( transformLoc, 1, GL_FALSE, glm::value_ptr( transRotate ));
+            glUniformMatrix4fv( transformLoc, 1, GL_FALSE, glm::value_ptr( transRotate ) );
             //transformation
 
             glBindVertexArray( VAO );
@@ -218,10 +212,10 @@ namespace textures
             glfwPollEvents();
         }
 
-
-        glDeleteVertexArrays(1, &VAO);
-        glDeleteBuffers(1, &VBO);
-        glDeleteBuffers(1, &EBO);
+        glDeleteVertexArrays( 1, &VAO );
+        glDeleteBuffers( 1,  &VBO );
+        glDeleteBuffers( 1, &EBO );
+        glDeleteProgram( shader.id );
 
         glfwTerminate();
         return 0;
