@@ -24,6 +24,8 @@ add_executable(
         lessons/getting_started/shaders/shaders.h
         lessons/getting_started/shaders/shaders.cpp
         lessons/getting_started/textures/texture.cpp
+        lessons/getting_started/coordinates/coordinates.cpp
+        lessons/getting_started/coordinates/coordinates.h
 )
 add_library(
         glad external/glad/src/glad.c

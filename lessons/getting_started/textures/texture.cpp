@@ -202,7 +202,7 @@ namespace textures
 
             auto transOffset = glm::mat4( 1.0f );
             transOffset = glm::translate( transOffset, glm::vec3( -0.5f, 0.5f, 0.0f ) );
-            transOffset = glm::scale( transOffset, glm::vec3( sin(glfwGetTime()), sin(glfwGetTime()), 1.0f ) );
+            transOffset = glm::scale( transOffset, glm::vec3( sin( glfwGetTime() ), sin( glfwGetTime() ), 1.0f ) );
             glUniformMatrix4fv( transformLoc, 1, GL_FALSE, glm::value_ptr( transOffset ) );
 
             glDrawElements( GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0 );
